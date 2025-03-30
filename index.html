@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Navigation Hub</title>
+    <style>
+        :root {
+            --apple-bg: #f5f5f7;
+            --apple-accent: #0071e3;
+            --apple-text: #1d1d1f;
+            --apple-card: #ffffff;
+            --apple-border: #d2d2d7;
+            --category-1: #8c58fb;
+            --category-2: #46a4ff;
+            --category-3: #ff6b6b;
+            --category-4: #50c878;
+            --category-5: #ffb347;
+            --category-6: #da70d6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--apple-bg);
+            color: var(--apple-text);
+            line-height: 1.5;
+            padding-bottom: 50px;
+        }
+        
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--apple-border);
+            background-color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .search-box:focus {
+            border-color: var(--apple-accent);
+            box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .category {
+            margin-bottom: 50px;
+        }
+        
+        .category-header {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .category-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 60px;
+            background-color: currentColor;
+        }
+        
+        .category-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .category-1 .category-header {
+            color: var(--category-1);
+        }
+        
+        .category-2 .category-header {
+            color: var(--category-2);
+        }
+        
+        .category-3 .category-header {
+            color: var(--category-3);
+        }
+        
+        .category-4 .category-header {
+            color: var(--category-4);
+        }
+        
+        .category-5 .category-header {
+            color: var(--category-5);
+        }
+        
+        .category-6 .category-header {
+            color: var(--category-6);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .tool-card {
+            background-color: var(--apple-card);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--apple-border);
+        }
+        
+        .tool-header h3 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .tool-url {
+            font-size: 14px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .tool-body {
+            padding: 15px;
+            flex-grow: 1;
+        }
+        
+        .tool-description {
+            font-size: 14px;
+            color: #444;
+            line-height: 1.5;
+        }
+        
+        .category-navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .category-button {
+            background-color: white;
+            border: 1px solid var(--apple-border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-button:hover {
+            background-color: var(--apple-accent);
+            color: white;
+            border-color: var(--apple-accent);
+        }
+        
+        .category-button.active {
+            background-color: var(--apple-accent);
+            color: white;
+            border-color: var(--apple-accent);
+        }
+        
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">AI Tools Hub</div>
+        </div>
+    </header>
+    
+    <div class="search-container">
+        <input type="text" id="searchBox" class="search-box" placeholder="Search AI tools...">
+    </div>
+    
+    <div class="category-navigation">
+        <button class="category-button active" data-category="all">All Categories</button>
+        <button class="category-button" data-category="writing">AI Writing & Copywriting</button>
+        <button class="category-button" data-category="voice">AI Voice Cloning & Synthesis</button>
+        <button class="category-button" data-category="art">AI Art & Creation</button>
+        <button class="category-button" data-category="productivity">AI Productivity Tools</button>
+        <button class="category-button" data-category="video">AI Video Creation</button>
+        <button class="category-button" data-category="image">AI Image Generation</button>
+    </div>
+    
+    <main>
+        <section class="category category-1" id="writing">
+            <div class="category-header">
+                <h2>AI Writing & Copywriting</h2>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Jasper.ai</h3>
+                        <div class="tool-url">jasper.ai</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI-powered platform specifically designed for marketing content creation. Jasper helps generate blog posts, social media content, ads, emails, and more with the ability to match your brand's tone and style.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Copy.ai</h3>
+                        <div class="tool-url">copy.ai</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A platform focused on business and marketing copy, helping businesses with go-to-market strategy, content creation, and messaging. Specializes in generating engaging marketing language and copy for various applications.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Wenxin Yige</h3>
+                        <div class="tool-url">yige.baidu.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">Baidu's AI art and creative assistance platform. It helps with creating artwork, composing text, and generating creative content with AI assistance. Supports both text-to-image generation and creative writing.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Rytr</h3>
+                        <div class="tool-url">rytr.me</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI writing assistant that helps create content for blogs, social media, emails and more. Features multiple language support, tone adjustments, and templates for various writing needs. Affordable option for content creation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="category category-2" id="voice">
+            <div class="category-header">
+                <h2>AI Voice Cloning & Synthesis</h2>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Descript Regenerate</h3>
+                        <div class="tool-url">descript.com/regenerate</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A powerful audio repair tool that uses AI to improve audio quality and make impossible edits possible. Enables easy voice modification, removal of background noise, and enhancement of recording clarity.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Murf AI</h3>
+                        <div class="tool-url">murf.ai</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A versatile text-to-speech software that creates studio-quality voiceovers. Features natural-sounding AI voices in multiple languages, accents, and tones. Perfect for creating voiceovers for videos, presentations, and e-learning.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Resemble AI</h3>
+                        <div class="tool-url">resemble.ai</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">Offers both text-to-speech and speech-to-speech capabilities, allowing you to generate realistic AI voices or clone your own voice. Used for creating consistent voiceovers, dubbing, and audio content at scale.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Play.ht</h3>
+                        <div class="tool-url">play.ht</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI voice generator that converts text to speech with natural-sounding voices. Offers hundreds of voices across multiple languages and dialects. Particularly useful for content creators, publishers, and educators.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>ElevenLabs</h3>
+                        <div class="tool-url">elevenlabs.io</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A powerful text-to-speech platform with exceptionally natural-sounding voices. Known for high emotional range and expressive abilities of voices. Offers voice cloning capabilities and multilingual support.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="category category-3" id="art">
+            <div class="category-header">
+                <h2>AI Art & Creation</h2>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Runway</h3>
+                        <div class="tool-url">runwayml.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A creative toolkit powered by machine learning that offers various AI-powered creative capabilities. Features include image and video editing, text-to-image generation, style transfer, motion tracking, and more.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Artbreeder</h3>
+                        <div class="tool-url">artbreeder.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI art platform that allows users to blend and "breed" images together to create new, unique artworks. Particularly good for creating portraits, characters, landscapes, and abstract compositions.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>NightCafe Creator</h3>
+                        <div class="tool-url">creator.nightcafe.studio</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI art generator that combines various models including Stable Diffusion, DALL-E, and others. Creates artwork from text descriptions, allows style transfer, and offers a community showcase of creations.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Dream by WOMBO</h3>
+                        <div class="tool-url">dream.ai</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A mobile-friendly AI art generator that turns text prompts into artistic images. Offers various art styles and a simple interface making it accessible for beginners to create impressive AI artwork.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>JiMeng AI</h3>
+                        <div class="tool-url">jimeng.jianying.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A comprehensive AI creation platform that offers tools for text, image, and video generation. Specializes in Chinese content creation with intuitive interfaces for creative professionals and casual users alike.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="category category-4" id="productivity">
+            <div class="category-header">
+                <h2>AI Productivity Tools</h2>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Notion AI</h3>
+                        <div class="tool-url">notion.com/product/ai</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI assistant integrated into Notion that helps with writing, summarizing, editing, and ideation. Assists with drafting documents, generating ideas, and improving writing within your Notion workspace.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Otter.ai</h3>
+                        <div class="tool-url">otter.ai</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI meeting assistant that provides real-time transcription, notes, summaries, and action items from meetings. Captures and processes conversations across video calls, phone calls, and in-person meetings.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Mem</h3>
+                        <div class="tool-url">get.mem.ai</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI-powered note-taking app that organizes your information automatically. Features include smart knowledge connections, task management, and powerful search capabilities to keep you organized.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Fireflies.ai</h3>
+                        <div class="tool-url">fireflies.ai</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI notetaker that automatically records, transcribes, summarizes, and analyzes your meetings. Integrates with video conferencing platforms and offers powerful search capabilities across meeting content.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>FlowGPT</h3>
+                        <div class="tool-url">flowgpt.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A community-driven platform offering various AI prompts and templates for different tasks. Helps users find and share effective prompts for different AI models to improve productivity and creativity.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>ChatOne</h3>
+                        <div class="tool-url">chat.wencangai.cn</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A conversational AI assistant that helps with various tasks including writing, translation, information retrieval, and problem-solving. Provides intuitive chat interface for productivity enhancement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="category category-5" id="video">
+            <div class="category-header">
+                <h2>AI Video Creation</h2>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>MiniMax</h3>
+                        <div class="tool-url">minimaxi.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI platform that specializes in video and image generation. Enables users to create high-quality videos from text prompts or images, with various style options and customization features.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>KlingAI</h3>
+                        <div class="tool-url">app.klingai.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A next-generation AI creative production platform focused on video generation. Offers tools for creating digital avatars, video synthesis, and other visual content with minimal technical knowledge required.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>HeyGen</h3>
+                        <div class="tool-url">heygen.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An AI video generation platform that creates professional-looking videos featuring digital avatars. Specializes in multilingual video production with realistic lip-syncing and natural-sounding voice synthesis.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Lumen5</h3>
+                        <div class="tool-url">lumen5.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A video creation platform that transforms text content into engaging videos. Uses AI to suggest visuals, structure content, and automate the video creation process, ideal for marketing and social media content.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>D-ID</h3>
+                        <div class="tool-url">d-id.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A platform specializing in AI-generated talking avatars. Converts text or audio into video presentations with photorealistic or animated avatars, ideal for corporate communications and educational content.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Runway Gen-2</h3>
+                        <div class="tool-url">runwayml.com/research/gen-2</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An advanced AI video generation tool that can create videos from text prompts, images, or video clips. Offers sophisticated motion synthesis and high-quality video outputs for creative professionals.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="category category-6" id="image">
+            <div class="category-header">
+                <h2>AI Image Generation</h2>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>DALL-E 3</h3>
+                        <div class="tool-url">openai.com/dall-e-3</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">OpenAI's advanced text-to-image model that generates detailed and high-quality images from text descriptions. Known for understanding complex prompts and producing photorealistic or artistic images.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Stable Diffusion</h3>
+                        <div class="tool-url">stablediffusionweb.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An open-source text-to-image AI model that generates detailed images based on text descriptions. Offers various fine-tuned models for different styles and applications, with wide community support.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Leonardo.ai</h3>
+                        <div class="tool-url">leonardo.ai</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A platform specializing in generating art and images for creative professionals and game developers. Offers fine-tuned models for different art styles and specialized content like characters and environments.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Canva AI Image Generator</h3>
+                        <div class="tool-url">canva.com/ai-image-generator</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">An integrated AI image generation tool within the Canva design platform. Creates custom images from text prompts that can be directly used in Canva designs, making it seamless for content creators.</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3>Midjourney</h3>
+                        <div class="tool-url">midjourney.com</div>
+                    </div>
+                    <div class="tool-body">
+                        <p class="tool-description">A discord-based AI image generation service known for creating artistic and aesthetically pleasing images. Particularly strong at creating atmospheric, painterly, and conceptual artwork from text prompts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBox = document.getElementById('searchBox');
+            const toolCards = document.querySelectorAll('.tool-card');
+            const categoryButtons = document.querySelectorAll('.category-button');
+            const categories = document.querySelectorAll('.category');
+            
+            // Search functionality
+            searchBox.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                
+                toolCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('.tool-description').textContent.toLowerCase();
+                    const url = card.querySelector('.tool-url').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm) || url.includes(searchTerm)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Show/hide categories based on visible cards
+                categories.forEach(category => {
+                    const visibleCards = category.querySelectorAll('.tool-card[style="display: flex;"]');
+                    if (visibleCards.length === 0) {
+                        category.style.display = 'none';
+                    } else {
+                        category.style.display = 'block';
+                    }
+                });
+            });
+            
+            // Category navigation
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Clear active class from all buttons
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    
+                    if (category === 'all') {
+                        // Show all categories
+                        categories.forEach(cat => cat.style.display = 'block');
+                        // Show all tools
+                        toolCards.forEach(card => card.style.display = 'flex');
+                    } else {
+                        // Hide all categories first
+                        categories.forEach(cat => cat.style.display = 'none');
+                        // Show only selected category
+                        document.getElementById(category).style.display = 'block';
+                        // Show all tools in that category
+                        document.querySelectorAll(`#${category} .tool-card`).forEach(card => card.style.display = 'flex');
+                    }
+                });
+            });
+            
+            // Make cards clickable to open URL
+            toolCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const url = this.querySelector('.tool-url').textContent;
+                    window.open(`https://${url}`, '_blank');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
